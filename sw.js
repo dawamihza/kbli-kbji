@@ -5,7 +5,7 @@
    peramban mengambil versi barunya.
    ============================================================ */
 
-const VERSI = 'kbli-kbji-v2026.1';
+const VERSI = 'kbli-kbji-v2026.1b';
 
 const BERKAS = [
   './',

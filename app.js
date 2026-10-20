@@ -16,7 +16,16 @@ const KAMUS = {
     namaPendek: 'KBLI 2025',
     namaPanjang: 'Klasifikasi Baku Lapangan Usaha Indonesia',
     file: 'data/kbli2025.json',
-    deskripsiSingkat: 'Klasifikasi bidang usaha — dipakai untuk perizinan berusaha di OSS.',
+    panduan: [
+      { t: 'Apa KBLI suatu usaha?' },
+      { j: 'Lihat bidang dan output (produk akhir) yang dihasilkan (dikomersialkan)' },
+      { spasi: true },
+      { t: 'Seseorang bekerja di KBLI apa?' },
+      { j: 'Lihat bidang dan output (produk akhir) yang dihasilkan (dikomersialkan) PENYEDIA KERJA (unit usaha), bukan output pekerja.' },
+      { j: 'Penyedia Kerja adalah entitas YANG MEMBERI UPAH/GAJI, bukan tempat riil bekerja.' },
+      { spasi: true },
+      { k: 'KUNCI: KBLI berbicara UNIT USAHA (PENYEDIA KERJA), bukan pekerja.' }
+    ],
     placeholder: 'Cari kode atau kegiatan usaha…',
     judulAkar: 'Telusuri menurut kategori',
     catatanTerdalam: 'Kode 5 digit — inilah kode yang dipakai saat mendaftarkan bidang usaha di sistem OSS.',
@@ -33,7 +42,12 @@ const KAMUS = {
     namaPendek: 'KBJI 2026',
     namaPanjang: 'Klasifikasi Baku Jabatan Indonesia',
     file: 'data/kbji2026.json',
-    deskripsiSingkat: 'Klasifikasi jabatan dan profesi — dipakai untuk statistik ketenagakerjaan.',
+    panduan: [
+      { t: 'Apa KBJI seseorang dalam pekerjaan?' },
+      { j: 'Lihat jobdesc/uraian tugas, peran, dan posisi/jabatan dalam pekerjaan.' },
+      { spasi: true },
+      { k: 'KUNCI: KBJI berbicara PEKERJA dalam pekerjaan/usaha, bukan unit usaha.' }
+    ],
     placeholder: 'Cari kode atau nama jabatan…',
     judulAkar: 'Telusuri menurut golongan pokok',
     catatanTerdalam: 'Kode jabatan 6 digit — tingkat paling rinci, dipakai untuk pendataan ketenagakerjaan.',
@@ -273,11 +287,19 @@ function gambarBeranda() {
     `<div class="struct-row"><span>${esc(t.label)} (${esc(t.digit)})</span><b>${(jumlah[t.key] || 0).toLocaleString('id-ID')}</b></div>`
   ).join('');
 
+  const panduan = k.panduan.map(b => {
+    if (b.spasi) return '<div class="gap"></div>';
+    if (b.t) return `<p class="tanya">${esc(b.t)}</p>`;
+    if (b.j) return `<p class="jawab">--&gt; ${esc(b.j)}</p>`;
+    return `<p class="kunci">${esc(b.k)}</p>`;
+  }).join('');
+
   body.innerHTML = `
     <div class="card">
-      <p class="lead">${esc(k.deskripsiSingkat)}</p>
       <h2>Struktur ${esc(k.namaPendek)}</h2>
       ${barisStruktur}
+      <hr class="card-hr">
+      ${panduan}
     </div>
     <h2 class="section-title">${esc(k.judulAkar)}</h2>
     ${r.roots.map(e => barisEntri(state.kamus, e, false)).join('')}
